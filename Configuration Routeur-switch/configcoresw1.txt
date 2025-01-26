@@ -1,0 +1,304 @@
+CORESW1#sh run
+Building configuration...
+
+Current configuration : 7044 bytes
+!
+! Last configuration change at 18:15:13 UTC Mon Mar 1 1993 by admin
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname CORESW1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 7 046B2B151C361C5C0D
+!
+username admin privilege 15 password 7 03347B181518715E4A
+no aaa new-model
+switch 1 provision ws-c3750v2-24ts
+system mtu routing 1500
+ip routing
+no ip domain-lookup
+ip domain-name wsl2024.org
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1475103360
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1475103360
+ revocation-check none
+ rsakeypair TP-self-signed-1475103360
+!
+!
+crypto pki certificate chain TP-self-signed-1475103360
+ certificate self-signed 01
+  3082024B 308201B4 A0030201 02020101 300D0609 2A864886 F70D0101 04050030
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 31343735 31303333 3630301E 170D3933 30333031 30303031
+  34345A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 34373531
+  30333336 3030819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281
+  8100D01A 5EE49634 2421782D BF3F48E7 EB4A2936 4B2BD9D5 7C50A0DA 1AF07C75
+  30B36AAB F18C59C4 4866F930 1BC05A58 CF28CE6D 9E9A7864 7B9C04EA A81D6162
+  90229FAF 58D2CE2B 4CAA7CB0 38AE4218 AD8646FC 2EDD22A2 97613EE6 859B4AD4
+  99B83284 B156DDD8 7BF3159A 462ACCED 86A9908E 0AEA005C 87BD7F6C 29C6DD3F
+  7D1B0203 010001A3 73307130 0F060355 1D130101 FF040530 030101FF 301E0603
+  551D1104 17301582 13434F52 45535731 2E77736C 32303234 2E6F7267 301F0603
+  551D2304 18301680 14969D85 D6159622 167D819D 7F2A2E43 479CB3CA 20301D06
+  03551D0E 04160414 969D85D6 15962216 7D819D7F 2A2E4347 9CB3CA20 300D0609
+  2A864886 F70D0101 04050003 8181002B B66D26CD 4A9146E9 4846E1BF C0F89EB0
+  317138D5 125A9DC8 50A1ECF8 4810624A 2730B62A 0DFD9927 8BB9F787 C239C2BE
+  FBD6EC90 CE9D572A 45EFE56B 60CD91A4 C0898B8B BA73F765 92803463 EFCC1D6A
+  03F2D600 A33A4FA9 15858123 04843021 B870E967 0A4A1B83 70E2BD39 FB6837D8
+  AC197A27 980952C6 2BECBA01 524E29
+        quit
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,20,30,40,50,99,300,666 priority 24576
+!
+vlan internal allocation policy ascending
+!
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ description LAG (LACP)
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99,300
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface FastEthernet1/0/1
+ description liaison CORESW1-ACCSW1
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface FastEthernet1/0/2
+ description liaison CORESW1-ACCSW2
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface FastEthernet1/0/3
+ switchport access vlan 666
+ switchport mode access
+ switchport nonegotiate
+!
+interface FastEthernet1/0/4
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/5
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/6
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/7
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/8
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/9
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/10
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/11
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/12
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/13
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/14
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/15
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/16
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/17
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/18
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/19
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/20
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/21
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface FastEthernet1/0/22
+ description liaison 1 LAG
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99,300
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode active
+!
+interface FastEthernet1/0/23
+ description liaison 2 LAG
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99,300
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode active
+!
+interface FastEthernet1/0/24
+ description liaison CORESW1-EDGE1
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 30,100,300
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet1/0/1
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/2
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan10
+ description Servers
+ ip address 10.11.10.60 255.255.255.192
+ standby 1 ip 10.11.10.62
+ standby 1 priority 110
+ standby 1 preempt
+!
+interface Vlan20
+ description Clients
+ ip address 10.11.21.252 255.255.254.0
+ standby 1 ip 10.11.21.254
+ standby 1 priority 110
+ standby 1 preempt
+!
+interface Vlan40
+ description Guest
+ ip address 10.11.40.60 255.255.255.192
+ standby 1 ip 10.11.40.62
+ standby 1 priority 110
+ standby 1 preempt
+!
+interface Vlan50
+ description IoT
+ ip address 10.11.50.60 255.255.255.192
+ standby 1 ip 10.11.50.62
+ standby 1 priority 110
+ standby 1 preempt
+!
+interface Vlan99
+ description Management
+ ip address 10.11.99.28 255.255.255.224
+ standby 1 ip 10.11.99.30
+ standby 1 priority 110
+ standby 1 preempt
+!
+interface Vlan100
+ description CORESW1-EDGE1
+ ip address 10.11.254.241 255.255.255.252
+!
+interface Vlan300
+ description iBGP_peering
+ no ip address
+!
+ip http server
+ip http secure-server
+!
+!
+ip route 0.0.0.0 0.0.0.0 10.11.254.242
+!
+logging esm config
+access-list 99 permit 10.11.99.0 0.0.0.31
+!
+!
+banner motd ^C
+/!\ Restricted access. Only for authorized people /!\
+^C
+!
+line con 0
+line vty 0 4
+ access-class 99 in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+line vty 5 15
+ login
+!
+end

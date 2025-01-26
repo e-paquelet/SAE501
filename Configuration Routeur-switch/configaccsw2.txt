@@ -1,0 +1,253 @@
+ACCSW2#sh run
+Building configuration...
+
+Current configuration : 4705 bytes
+!
+! Last configuration change at 09:37:31 UTC Mon Dec 16 2024
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname ACCSW2
+!
+boot-start-marker
+boot-end-marker
+!
+enable password 7 0236244818115F3348
+!
+username admin privilege 15 secret 5 $1$8BwK$6NVj8ldZ6N3ltdny1LtOg.
+no aaa new-model
+switch 1 provision ws-c2960x-24ps-l
+!
+!
+no ip domain-lookup
+ip domain-name wsl2024.org
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/0/1
+ description liaison ACCSW2-siteHQ
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,30,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet1/0/2
+ description liaison ACCSW2-CORESW1
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree cost 50
+!
+interface GigabitEthernet1/0/3
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security maximum 3
+ switchport port-security aging time 30
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet1/0/4
+ switchport access vlan 20
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security maximum 3
+ switchport port-security aging time 30
+ switchport port-security
+ shutdown
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet1/0/5
+ switchport access vlan 99
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security maximum 3
+ switchport port-security aging time 30
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet1/0/6
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/7
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/8
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/9
+ switchport access vlan 99
+ switchport mode access
+ switchport nonegotiate
+!
+interface GigabitEthernet1/0/10
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/11
+ switchport access vlan 99
+ switchport mode access
+!
+interface GigabitEthernet1/0/12
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/13
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/14
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/15
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/16
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/17
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/18
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/19
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/20
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/21
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/22
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/23
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/24
+ description liaison ACCSW2-CORESW2
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree cost 100
+!
+interface GigabitEthernet1/0/25
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/26
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/27
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet1/0/28
+ switchport access vlan 666
+ switchport mode access
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan99
+ description ACCES SSH
+ ip address 10.11.99.3 255.255.255.224
+!
+ip http server
+ip http secure-server
+!
+!
+access-list 99 permit 10.11.99.0 0.0.0.31
+!
+no vstack
+banner login ^C
+/!\ Restricted access. Only for authorized people /!\^C
+banner motd ^CC
+/!\ Restricted access. Only for authorized people /!\
+^C
+!
+line con 0
+line vty 0 4
+ access-class 99 in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+line vty 5 15
+ login
+!
+end
+

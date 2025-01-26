@@ -1,0 +1,111 @@
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname ACCSW1
+!
+!
+!
+ip ssh version 2
+no ip domain-lookup
+ip domain-name wsl2024.org
+!
+username admin secret 5 $1$mERr$kiGzU4Kf6Zb9e78XybbFa0
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree cost 100
+!
+interface FastEthernet0/2
+ switchport trunk allowed vlan 10,20
+ switchport mode trunk
+!
+interface FastEthernet0/3
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree cost 50
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+banner motd ^
+/!\ Restricted access. Only for authorized people /!\
+^
+!
+!
+!
+access-list 99 permit 10.11.99.0 0.0.0.31
+line con 0
+!
+line vty 0 4
+ access-class 99 in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+line vty 5 15
+ login
+!
+!
+!
+!
+end
+

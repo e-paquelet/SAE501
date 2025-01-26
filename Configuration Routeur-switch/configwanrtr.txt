@@ -1,0 +1,181 @@
+WANRTR#sh run
+Building configuration...
+
+Current configuration : 2963 bytes
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname WANRTR
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$4Q4E$p1FNUlD3OWVqxq9EEZL4L0
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+ip vrf INET
+ rd 65000:20
+!
+ip vrf MAN
+ rd 65000:10
+!
+!
+!
+!
+no ip domain lookup
+ip domain name wsl2024.org
+ip cef
+no ipv6 cef
+multilink bundle-name authenticated
+!
+!
+cts logging verbose
+!
+!
+license udi pid CISCO1941/K9 sn FCZ194093ND
+license boot module c1900 technology-package datak9
+!
+!
+username admin privilege 15 secret 5 $1$UimQ$JFEscjhntoGpnHfLGvwl.0
+!
+redundancy
+!
+!
+ip ssh version 2
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.13
+ description IP OSPF MAN EDGE1
+ encapsulation dot1Q 13
+ ip vrf forwarding MAN
+ ip address 10.11.254.253 255.255.255.252
+ ip ospf cost 10
+!
+interface GigabitEthernet0/0.14
+ description IP BGP INET EDGE1
+ encapsulation dot1Q 14
+ ip vrf forwarding INET
+ ip address 91.11.222.97 255.255.255.252
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1.15
+ description IP OSPF MAN EDGE2
+ encapsulation dot1Q 15
+ ip vrf forwarding MAN
+ ip address 10.11.254.249 255.255.255.252
+ ip ospf cost 30
+!
+interface GigabitEthernet0/1.16
+ description IP BGP INET EDG2
+ encapsulation dot1Q 16
+ ip vrf forwarding INET
+ ip address 31.11.126.13 255.255.255.252
+!
+interface FastEthernet0/0/0
+ ip vrf forwarding MAN
+ ip address 10.116.11.2 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1/0
+ ip vrf forwarding INET
+ ip address 8.8.11.6 255.255.255.248
+ duplex auto
+ speed auto
+!
+router ospf 10 vrf MAN
+ router-id 1.1.1.1
+ redistribute connected subnets
+ network 10.11.254.248 0.0.0.3 area 0
+ network 10.11.254.252 0.0.0.3 area 0
+ network 10.116.11.0 0.0.0.3 area 0
+!
+router bgp 6530
+ bgp router-id 1.1.1.1
+ bgp log-neighbor-changes
+ !
+ address-family ipv4 vrf INET
+  network 8.8.11.0 mask 255.255.255.248
+  network 31.11.126.12 mask 255.255.255.252
+  network 91.11.222.96 mask 255.255.255.252
+  redistribute connected
+  neighbor 31.11.126.14 remote-as 6516
+  neighbor 31.11.126.14 activate
+  neighbor 91.11.222.98 remote-as 6516
+  neighbor 91.11.222.98 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+access-list 10 permit 10.11.99.0 0.0.0.31
+!
+control-plane
+!
+!
+banner login ^C
+/!\ Restricted access. Only for authorized people /!\
+^C
+banner motd ^C
+/!\ Restricted access. Only for authorized people /!\
+^C
+!
+line con 0
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ access-class 10 in
+ exec-timeout 5 0
+ absolute-timeout 20
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end

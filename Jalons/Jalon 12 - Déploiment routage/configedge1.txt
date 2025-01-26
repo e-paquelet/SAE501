@@ -1,0 +1,177 @@
+Building configuration...
+
+Current configuration : 3245 bytes
+!
+! Last configuration change at 07:21:32 UTC Tue Dec 17 2024
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname EDGE1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$UjTw$eXgHkX5Bf82REbiTfIc/j.
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name wsl2024.org
+ip cef
+no ipv6 cef
+multilink bundle-name authenticated
+!
+!
+cts logging verbose
+!
+!
+license udi pid CISCO2901/K9 sn FCZ2029414K
+!
+!
+username admin privilege 15 secret 5 $1$Vjwd$1zxEKYw2S20CXxjeAV8Xb.
+!
+redundancy
+!
+!
+ip ssh version 2
+!
+!
+!
+!
+interface Loopback0
+ description IP LOOPBACK
+ ip address 191.5.157.33 255.255.255.240
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.13
+ description IP OSPF MAN EDGE1
+ encapsulation dot1Q 13
+ ip address 10.11.254.254 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface GigabitEthernet0/0.14
+ description IP BGP INET EDG1
+ encapsulation dot1Q 14
+ ip address 91.11.222.98 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1.30
+ description VLAN 30
+ encapsulation dot1Q 30
+ ip address 217.11.160.4 255.255.255.248
+ standby 30 ip 217.11.160.6
+ standby 30 priority 110
+ standby 30 preempt
+!
+interface GigabitEthernet0/1.100
+ description IP OSPF VERS CORESW1
+ encapsulation dot1Q 100
+ ip address 10.11.254.242 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface GigabitEthernet0/1.300
+ description IP IBGP INTER EDGE
+ encapsulation dot1Q 300
+ ip address 10.11.254.245 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+!
+router ospf 10
+ router-id 2.2.2.2
+ redistribute connected subnets
+ redistribute static subnets
+ network 10.11.254.240 0.0.0.3 area 0
+ network 10.11.254.244 0.0.0.3 area 0
+ network 10.11.254.252 0.0.0.3 area 0
+!
+router bgp 6516
+ bgp router-id 2.2.2.2
+ bgp log-neighbor-changes
+ bgp default local-preference 300
+ neighbor 10.11.254.246 remote-as 6516
+ neighbor 10.11.254.246 update-source GigabitEthernet0/1.300
+ neighbor 91.11.222.97 remote-as 6530
+ !
+ address-family ipv4
+  network 10.11.254.244 mask 255.255.255.252
+  network 91.11.222.96 mask 255.255.255.252
+  network 217.11.160.0 mask 255.255.255.248
+  neighbor 10.11.254.246 activate
+  neighbor 91.11.222.97 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip nat inside source list 1 interface GigabitEthernet0/0.14 overload
+ip route 10.11.0.0 255.255.0.0 10.11.254.241
+!
+!
+!
+access-list 1 permit 10.0.0.0 0.255.255.255
+access-list 99 permit 10.11.99.0 0.0.0.31
+!
+control-plane
+!
+!
+banner login ^C
+/!\ Restricted access. Only for authorized people /!\
+^C
+banner motd ^C
+/!\ Restricted access. Only for authorized people /!\
+^C
+!
+line con 0
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ access-class 99 in
+ exec-timeout 5 0
+ absolute-timeout 20
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end
+
