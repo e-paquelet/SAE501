@@ -39,5 +39,5 @@ Créer une **infrastructure réseau fonctionnelle** inspirée du concours **Worl
 - Renforcement des compétences en **résolution de problèmes**, **travail d’équipe**, et **gestion du temps**.  
 
 ## 📂 Ressources  
-- [Rapport complet 📄](Rapport de synthèse.pdf)  
+- [Rapport complet 📄](./Rapport_de_synthèse_-_Groupe-11.pdf)  
 - Scripts et configurations : Disponibles dans ce dépôt. 🛠️  
